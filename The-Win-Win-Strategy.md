@@ -1,6 +1,6 @@
 Assume we dispose of an "elementary" matrix (i wont be a fascist about the word "elementary") M satisfying
 
-<math>M_{i,j}</math> is the probability of winning a fight with <math>i</math> attackers and <math>j</math> defenders.
+$M_{i,j}$ is the probability of winning a fight with <math>i</math> attackers and <math>j</math> defenders.
 
 Say that <math>M</math> is big enough so that we cover all the possible cases
 (typically <math>M</math> is of order $N$ with N=50,60,100?! 20 seems a bit too tiny).
