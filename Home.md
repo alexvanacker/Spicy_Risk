@@ -1,0 +1,1 @@
+Welcome to the Spicy_Risk wiki!
