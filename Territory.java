@@ -1,3 +1,4 @@
+// {{{
 /*
  * Classname : Territory
  * 
@@ -17,11 +18,9 @@
  * Date : Sat June 22, 2013
  * 
  */
-
-class Territory {
-    /*
-      
-     */
+// }}}
+class Territory {      
+    
     int identifier;
     Territory[] connexTerritories;
     Territory_state territoryState;
@@ -33,19 +32,19 @@ class Territory {
     }
 
     //Get methods
-    public int get_identifier(){
+    public int getIdentifier(){
 	return identifier;
     }
 
-    public Territory[] get_connexTerritories(){
+    public Territory[] getConnexTerritories(){
 	return connexTerritories;
     }
 
-    public Territory_state get_territoryState(){
+    public Territory_state getTerritoryState(){
 	return territoryState;
     }
-    //Set method for the state. The other fields do not need to be changed after having been instanciated by the builder function
-    public Territory setState(Territory_state new_state){
+    //Set method for the state. The other fields do not need to be changed after having been instanciated by the constructor function
+    private Territory setState(Territory_state new_state){
 	territoryState = new_state;
 	return this;
     }

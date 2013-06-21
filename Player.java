@@ -1,3 +1,4 @@
+// {{{
 /*
  * Classname : Player
  * 
@@ -9,7 +10,7 @@
  * Date : Sat June 22, 2013
  * 
  */
-
+// }}}
 
 class Player{
 
@@ -19,7 +20,7 @@ class Player{
 	name = playerName;
     }
 
-    public String get_name(){
+    public String getName(){
 	return name;
     }
 }

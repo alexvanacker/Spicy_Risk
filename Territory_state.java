@@ -1,3 +1,4 @@
+// {{{
 /*
  * Classname : Territory_state
  * 
@@ -10,7 +11,7 @@
  * Date : Sat June 22, 2013
  * 
  */
-
+// }}}
 class Territory_state{
 
     Player owner;
@@ -33,11 +34,11 @@ class Territory_state{
      * Get methods
      */
 
-    public Player get_owner() {
+    public Player getOwner() {
 	return owner;
     }
     
-    public int get_unitCount() {
+    public int getUnitCount() {
 	return unitCount;
     }
 
@@ -45,12 +46,12 @@ class Territory_state{
      * Set methods
      */
     
-    private Territory_state set_owner(Player newOwner){
+    private Territory_state setOwner(Player newOwner){
 	owner = newOwner;
 	return this;
     }
 
-    private Territory_state set_unitCount(int newCount){
+    private Territory_state setUnitCount(int newCount){
 	unitCount = newCount;
 	return this;
     }
