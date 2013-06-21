@@ -19,16 +19,21 @@
  * 
  */
 // }}}
+import java.util.Arrays;
+import java.lang.*;
+
 class Territory {      
     
-    int identifier;
-    Territory[] connexTerritories;
-    Territory_state territoryState;
+    private int identifier;
+    private Territory[] connexTerritories;
+    private Player owner;
+    private int unitCount;
 
-    public Territory(int id, Territory[] neighbours, Territory_state initialState){
+    public Territory(int id, Territory[] neighbours, Player initialOwner, int initialUnitCount){
 	identifier = id;
 	connexTerritories = neighbours;
-	territoryState = initialState;
+	owner = initialOwner;
+	unitCount = initialUnitCount;
     }
 
     //Get methods
@@ -40,13 +45,113 @@ class Territory {
 	return connexTerritories;
     }
 
-    public Territory_state getTerritoryState(){
-	return territoryState;
+    public Player getOwner() {
+	return owner;
     }
-    //Set method for the state. The other fields do not need to be changed after having been instanciated by the constructor function
-    private Territory setState(Territory_state new_state){
-	territoryState = new_state;
-	return this;
+    
+    public int getUnitCount() {
+	return unitCount;
     }
+
+    /*
+     * Set methods
+     */
+    private void setOwner(Player newOwner){
+	owner = newOwner;
+    }
+
+    private void setUnitCount(int newCount){
+	unitCount = newCount;
+    }
+
+    /*
+     * Rolling a dice
+     */
+    private int rollOneDice(){
+	return (1 + ((int)(Math.random()*6)));
+    }
+    
+    /*
+     * Rolling dices for an attacker or a defender for one round of
+     * fight
+     */
+    private int[] castTurnDices(int numberOfDice){
+	int count = 0;
+	int[] strength = new int[numberOfDice];
+	while (count < numberOfDice) {
+		strength[count] = rollOneDice();
+		count++;
+	    };
+	Arrays.sort(strength);
+	return strength;
+    }
+    
+    /*
+     * Returns the number of defence losses and the number of attack
+     * losses
+     */
+    private int[] resultOfAttack(int[] defenceRolls, int[] attackRolls){
+	int[] losses ={0,0};
+	int defenceSize = defenceRolls.length;
+	int attackSize = attackRolls.length;
+	int remainingFights = Math.min(defenceSize,attackSize);
+	int doneFights= 0;
+	while(doneFights < remainingFights-1){
+	    if(defenceRolls[defenceSize-doneFights]>attackRolls[attackSize-doneFights]){
+		losses[1]++;
+	    }
+	    else if(defenceRolls[defenceSize-doneFights]<attackRolls[attackSize-doneFights]){
+		losses[0]++;
+	    }
+	    doneFights++;
+	}
+	return losses;
+    }
+
+    //{{{
+    /*Verifies if Player has enough soldiers on its territory to
+     * initiate such an attack
+     */
+    //}}}
+    public boolean isCorrectAttack(int numberOfAttackers){
+	return (numberOfAttackers <= this.getUnitCount())&&(numberOfAttackers > 1);
+    }
+
+
+    public void isAttacked(Player attacker, int numberOfAttackers){
+	//Implement the fighting pattern
+	boolean endOfFight = false;
+	int tempNumberOfDefenders = this.getUnitCount();
+	int defendersInRound ;
+	// I dont know if the next line is important, 
+	// or if I should directly use numberOfAttackers
+	int tempNumberOfAttackers = numberOfAttackers;
+	int attackersInRound ;
+	while (!endOfFight) {
+		defendersInRound = Math.min(tempNumberOfDefenders,3);
+		attackersInRound = Math.min(tempNumberOfAttackers,3);
+		int[] defendersStrength = castTurnDices(defendersInRound);
+		int[] attackersStrength = castTurnDices(attackersInRound);
+		int[] losses = resultOfAttack(defendersStrength,attackersStrength);
+		tempNumberOfDefenders -= losses[0];
+		tempNumberOfAttackers -= losses[1];
+		endOfFight = (tempNumberOfDefenders>0)&&(tempNumberOfAttackers>0);
+	    }
+	if(tempNumberOfDefenders == 0){
+	    //Defense lost, the territory now belongs to the attacker
+	    
+	    //We have to change the table containing the territories owned by the defensor, and by the attacker.
+
+	    //We change the owner of this territory
+	    setOwner(attacker);
+	    setUnitCount(tempNumberOfAttackers);
+	    
+	}
+	else{
+	    //Defence won, we just set the units count to the new value
+	    setUnitCount(tempNumberOfDefenders);
+	};
+    }
+    
 
 }
